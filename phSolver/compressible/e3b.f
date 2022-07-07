@@ -407,7 +407,7 @@ c
 c
 c.... -------------------->  Rotating Band Forces  <---------------------
 c
-        if ((ires .ne. 2) .and. (iter .eq. nitr) .and. (numrbs. gt. 0)) then
+        if ((ires .ne. 2) .and. (iter .eq. nitr) .and. (numRotBands. gt. 0)) then
 c
 c.... compute the forces on each rigid body
 c

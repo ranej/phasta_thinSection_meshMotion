@@ -227,7 +227,7 @@ c
      &      c_loc(intfromfile), ione, dataInt, iotype)
            allocate(tmpm2gb(neltp,3))
            allocate(rotbandIndex(neltp)
-           rotbandIndex = 0
+           rotBandIndex = 0
            im2gbsiz = neltp*3
            call phio_readdatablock(fhandle, fname2 // char(0),
      &      c_loc(tmpm2gb),im2gbsiz,dataInt,iotype)

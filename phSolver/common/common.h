@@ -19,6 +19,7 @@ c
       use snapmesh_m
       use meshquality_m
       use rigidbody_m
+      use rotatingband_m
       use timdat_m
       use elmpar_m
       use blkdat_m

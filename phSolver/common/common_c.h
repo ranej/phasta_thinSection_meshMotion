@@ -303,7 +303,8 @@ extern "C" {
 
   extern struct {
     int numRotBands;
-    int numRotBandTags[MAXTS][MAXTS];
+    int numRotBandFaceTags;
+    int rotBandTag[MAXTS][MAXTS];
   } rotatingband ;
   
 

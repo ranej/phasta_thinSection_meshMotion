@@ -227,6 +227,24 @@ c
 c
 c----------------------------------------------------------------------
 c
+c.... common /rotatingband/   : rotating band parameters
+c
+c numRotBands         : number of rotating bands
+c numRotBandFaceTags  : number of faces for each rotating band
+c rotBandTag          : tags of faces for each rotating band
+c
+      module rotatingband_m
+        use iso_c_binding
+        use global_const_m
+        implicit none
+        integer(c_int)         :: numRotBands
+        integer(c_int)         :: numRotBandFaceTags
+        integer(c_int), target :: rotBandTag(MAXTS, MAXTS)
+        common /rotatingband/    numRotBands,   numRotBandFaceTags,  
+     &                         rotBandTag
+      end module rotatingband_m
+c
+c----------------------------------------------------------------------
 c.... common /timdat/   : time data
 c
 c time          : current run time

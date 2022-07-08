@@ -299,6 +299,8 @@ c
         deallocate(rbMTs)
         deallocate(rbFlags)
 c
+        deallocate(rotBandIndex)
+
         call finalizeDtN
         call clearper
         call finalizeNABI

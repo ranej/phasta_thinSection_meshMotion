@@ -696,17 +696,25 @@ int input_fform(phSolver::Input& inp)
     }
 
     str0.assign("Number of Face Tags for Rotating Band ");
-    for (i = 0; i < rotatingband.numRotBand; ++i) {
+    for (i = 0; i < rotatingband.numRotBands; ++i) {
       string str;
       stringstream ss;
       ss << i;
       str = str0 + ss.str();
-      rotatingband.numFaceTags = inp.GetValue(str);
-      str1.assing("Face Tags for Rotating Band ");
+      rotatingband.numRotBandFaceTags = inp.GetValue(str);
+      if (rotatingband.numRotBandFaceTags > MAXTS) {
+        cout << "ERROR in Input: increase MAXTS and recompile\n";
+        exit(1);
+      }
+      str1.assign("Face Tags for Rotating Band ");
       ss << i;
       str = str1 + ss.str();
       ivec = inp.GetValue(str);
-      for(j = 1; j < numFaceTags; ++j)
+      if (ivec.size() != numRotBandFaceTags) {
+        cout << "Error: number of face tags for rotating band" << ss.str << " is wrong!" << endl;
+        exit(1);
+      }
+      for(j = 0; j < numRotBandFaceTags; ++j)
         rotatingband.rotBandTag[i,j] = ivec[j];
       }
       ivec.erase(ivec.begin(),ivec.end());

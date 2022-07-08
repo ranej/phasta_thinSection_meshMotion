@@ -1,4 +1,4 @@
-ionesubroutine genbkb (ibksz)
+subroutine genbkb (ibksz)
 c
 c----------------------------------------------------------------------
 c
@@ -225,20 +225,19 @@ c
            intfromfile(:)=-1
            call phio_readheader(fhandle, fname2 // char(0),
      &      c_loc(intfromfile), ione, dataInt, iotype)
-c... Not sure on ione
-           allocate(tmpm2gb(ibksiz,3))
-           allocate(rotbandIndex(ibksiz)
+           allocate(tmpm2gb(neltp,3))
+           allocate(rotbandIndex(neltp)
            rotbandIndex = 0
-           im2gbsiz = ibksiz*3
+           im2gbsiz = neltp*3
            call phio_readdatablock(fhandle, fname2 // char(0),
      &      c_loc(tmpm2gb),im2gbsiz,dataInt,iotype)
 c    
-           do i=1,ibksiz
+           do i=1,neltp
 c             counter = 0
              do j = 1,numRotBands
-               do k=1,numRotBandTags
+               do k = 1,numRotBandTags
 c                 counter = counter +1
-                 if (m2gb(i,2) .eq. rotBandTag(j,k)) rotBandIndex(i) = j
+                 if (tmpm2gb(i,2) .eq. rotBandTag(j,k)) rotBandIndex(i) = j
                enddo
              enddo
            enddo   

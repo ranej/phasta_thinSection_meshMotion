@@ -100,6 +100,7 @@ c
      &            shape(npro,nshl),        shdrv(npro,nsd,nshl)
 c
         dimension xmudum(npro,ngauss)
+        dimension rotBandIndex(npro)
         integer   aa, b
         integer, intent(in) :: materb
 
@@ -409,16 +410,16 @@ c.... -------------------->  Rotating Band Forces  <---------------------
 c
         if ((ires .ne. 2) .and. (iter .eq. nitr) .and. (numRotBands. gt. 0)) then
 c
-c.... compute the forces on each rigid body
+c.... compute the forces on each rotating band
 c
           do i = 1, npro
-            if (rbIndex(i).ge.1) then
+            if (rotBandIndex(i).ge.1) then
               rotBandForce(rotBandIndex(i),1) = rotBandForce(rotBandIndex(i),1)
      &                 + ( pres(i) * bnorm(i,1) - tau1n(i) ) * WdetJb(i)
               rotBandForce(rotBandIndex(i),2) = rotBandForce(rotBandIndex(i),2)
-     &                 + ( pres(i) * bnorm(i,2) - tau1n(i) ) * WdetJb(i)
-              rotBandForce(rotBandIndex(i),2) = rotBandForce(rotBandIndex(i),3)
-     &                 + ( pres(i) * bnorm(i,3) - tau1n(i) ) * WdetJb(i)
+     &                 + ( pres(i) * bnorm(i,2) - tau2n(i) ) * WdetJb(i)
+              rotBandForce(rotBandIndex(i),3) = rotBandForce(rotBandIndex(i),3)
+     &                 + ( pres(i) * bnorm(i,3) - tau3n(i) ) * WdetJb(i)
             endif
           enddo
         endif ! end if ires = 2 and is the last solve in the stagger and have rb

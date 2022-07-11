@@ -13,6 +13,10 @@ c
         real*8, allocatable :: m2gParCoord(:,:)
       end module
 
+      module rotBand
+        integer,allocatable  :: rotBandIndex(:) 
+      end module
+
       module rigidBodyReadData
         integer              :: rbUseReadData
         integer, allocatable :: rbIDs(:)
@@ -46,6 +50,7 @@ c
       use rigidBodyReadData
       use BLparameters
       use TSparameters
+      use rotBand
 
       real*8, allocatable :: point2x(:,:)
       real*8, allocatable :: qold(:,:)

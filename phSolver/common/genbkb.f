@@ -1,4 +1,4 @@
-subroutine genbkb (ibksz)
+        subroutine genbkb (ibksz)
 c
 c----------------------------------------------------------------------
 c
@@ -19,6 +19,7 @@ c
         integer, target, allocatable :: ientp(:,:),iBCBtp(:,:)
         real*8, target, allocatable :: BCBtp(:,:)
         integer materb(ibksz)
+        integer, target, allocatable :: rotBandIndex(:)
         integer, target :: intfromfile(50) ! integers read from headers
         character*255 fname1
         integer :: descriptor, descriptorG, GPID, color, nfields
@@ -107,8 +108,10 @@ c             end select
 C           call MPI_Barrier(MPI_COMM_WORLD,ierr) 
            intfromfile(:)=-1
 CC           call phio_readheader(fhandle, trim(fname2)//C_NULL_CHAR,
+           write(*,*) "Before phio_readheader"
            call phio_readheader(fhandle, fname2 // char(0),
      &      c_loc(intfromfile), ieight, dataInt, iotype)
+           write(*,*) "After phio_readheader"
            neltp =intfromfile(1)
            nenl  =intfromfile(2)
            ipordl=intfromfile(3)
@@ -223,25 +226,36 @@ C           call MPI_BARRIER(MPI_COMM_WORLD, ierr)
             endif
 c
            intfromfile(:)=-1
+           write(*,*) "reading m2gb arrays"
            call phio_readheader(fhandle, fname2 // char(0),
      &      c_loc(intfromfile), ione, dataInt, iotype)
+           write(*,*) "beyond read header"
            allocate(tmpm2gb(neltp,3))
-           allocate(rotbandIndex(neltp)
+           allocate(rotBandIndex(neltp))
+           write(*,*) "allocated"
            rotBandIndex = 0
            im2gbsiz = neltp*3
            call phio_readdatablock(fhandle, fname2 // char(0),
      &      c_loc(tmpm2gb),im2gbsiz,dataInt,iotype)
+           write(*,*) "read data block"
 c    
            do i=1,neltp
+             write(*,*) "looping over neltp", tmpm2gb(i,2)
 c             counter = 0
              do j = 1,numRotBands
-               do k = 1,numRotBandTags
+               write(*,*) "looping over js", numRotBands, numRotBandFaceTags
+               do k = 1,numRotBandFaceTags
+                 write(*,*) "looping over ks", numRotBandFaceTags
 c                 counter = counter +1
-                 if (tmpm2gb(i,2) .eq. rotBandTag(j,k)) rotBandIndex(i) = j
+                 if (tmpm2gb(i,2) .eq. rotBandTag(j,k)) then
+                   write(*,*) "m2gb Found"
+c                   rotBandIndex(i) = j
+                   write(*,*) "rotBandIndex set"
+                 endif       
                enddo
              enddo
            enddo   
-           deallocate(tmpm2gb)
+           write(*,*) "done with loop"
 
 
 c.... Debug Jitesh
@@ -346,6 +360,7 @@ c
            deallocate(mattype)
            deallocate(neltp_mattype)
            deallocate(bcbtmp)
+           deallocate(tmpm2gb)
 
         enddo iblk_loop
         lcblkb(1,nelblb+1) = iel

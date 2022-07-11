@@ -8,6 +8,7 @@ c
         integer, target, allocatable :: mattype(:), mattypeif(:,:)
         integer, pointer :: ientmp(:,:), ienif0tmp(:,:), ienif1tmp(:,:), ibcbtmp(:,:)
         real*8,  pointer :: bcbtmp(:,:)
+        integer, pointer :: tmpm2gb(:,:)
 c
       contains
 c

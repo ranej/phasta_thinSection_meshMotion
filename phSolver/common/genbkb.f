@@ -245,9 +245,9 @@ c
              write(*,*) "looping over neltp", tmpm2gb(i,2)
 c             counter = 0
              do j = 1,numRotBands
-c               do k = 1,numRotBandFaceTags
-                 counter = counter +1
-c                 if (tmpm2gb(i,2) .eq. rotBandTag(j,k)) then
+               do k = 1,numRotBandFaceTags
+c                 counter = counter +1
+                 if (tmpm2gb(i,2) .eq. rotBandTag(j,k)) then
                    rotBandIndex(i) = j
                    write(*,*) "rotBandIndex set"
                  endif       

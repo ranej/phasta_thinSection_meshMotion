@@ -87,6 +87,8 @@ C
         iblk_loop: do iblk = 1, itpblktot
 c        iblk_loop: do iblk = 1, maxtop
 c
+
+           write(*,*) 'iblk:' , iblk
            writeLock=0;
             if(input_mode.ge.1)then
                write (fname2,"('connectivity boundary',i1)") iblk
@@ -218,21 +220,21 @@ c
 c....Debug Jitesh
 c.... Read the m2gb data
 c
-C           call MPI_BARRIER(MPI_COMM_WORLD, ierr)
+c           call MPI_BARRIER(MPI_COMM_WORLD, ierr)
             if(input_mode.ge.1)then
                write (fname2,"('m2gb',i1)") iblk
             else
       write (fname2,"('m2gb?')")
             endif
-c
+
            intfromfile(:)=-1
            write(*,*) "reading m2gb arrays"
            call phio_readheader(fhandle, fname2 // char(0),
      &      c_loc(intfromfile), ione, dataInt, iotype)
-           write(*,*) "beyond read header"
+           write(*,*) " header read"
            allocate(tmpm2gb(neltp,3))
            allocate(rotBandIndex(neltp))
-           write(*,*) "allocated"
+          write(*,*) "allocated"
            rotBandIndex = 0
            im2gbsiz = neltp*3
            call phio_readdatablock(fhandle, fname2 // char(0),
@@ -243,13 +245,10 @@ c
              write(*,*) "looping over neltp", tmpm2gb(i,2)
 c             counter = 0
              do j = 1,numRotBands
-               write(*,*) "looping over js", numRotBands, numRotBandFaceTags
-               do k = 1,numRotBandFaceTags
-                 write(*,*) "looping over ks", numRotBandFaceTags
-c                 counter = counter +1
-                 if (tmpm2gb(i,2) .eq. rotBandTag(j,k)) then
-                   write(*,*) "m2gb Found"
-c                   rotBandIndex(i) = j
+c               do k = 1,numRotBandFaceTags
+                 counter = counter +1
+c                 if (tmpm2gb(i,2) .eq. rotBandTag(j,k)) then
+                   rotBandIndex(i) = j
                    write(*,*) "rotBandIndex set"
                  endif       
                enddo

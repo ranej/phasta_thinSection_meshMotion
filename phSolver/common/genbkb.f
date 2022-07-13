@@ -17,9 +17,10 @@ c
         include "mpif.h" !Required to determine the max for itpblk
 
         integer, target, allocatable :: ientp(:,:),iBCBtp(:,:)
+        integer, allocatable :: rotBandIndex(:)
         real*8, target, allocatable :: BCBtp(:,:)
         integer materb(ibksz)
-        integer, target, allocatable :: rotBandIndex(:)
+        integer counter
         integer, target :: intfromfile(50) ! integers read from headers
         character*255 fname1
         integer :: descriptor, descriptorG, GPID, color, nfields
@@ -228,33 +229,27 @@ c           call MPI_BARRIER(MPI_COMM_WORLD, ierr)
             endif
 
            intfromfile(:)=-1
-           write(*,*) "reading m2gb arrays"
            call phio_readheader(fhandle, fname2 // char(0),
-     &      c_loc(intfromfile), ione, dataInt, iotype)
-           write(*,*) " header read"
+     &      c_loc(intfromfile), itwo, dataInt, iotype)
            allocate(tmpm2gb(neltp,3))
-           allocate(rotBandIndex(neltp))
-          write(*,*) "allocated"
+           if ( .not. allocated(rotBandIndex) ) allocate(rotBandIndex(neltp))
            rotBandIndex = 0
            im2gbsiz = neltp*3
            call phio_readdatablock(fhandle, fname2 // char(0),
      &      c_loc(tmpm2gb),im2gbsiz,dataInt,iotype)
-           write(*,*) "read data block"
 c    
            do i=1,neltp
-             write(*,*) "looping over neltp", tmpm2gb(i,2)
-c             counter = 0
+             counter = 0
              do j = 1,numRotBands
                do k = 1,numRotBandFaceTags
-c                 counter = counter +1
-                 if (tmpm2gb(i,2) .eq. rotBandTag(j,k)) then
+                 if (tmpm2gb(i,1) .eq. rotBandTag(j,k)) then
                    rotBandIndex(i) = j
+                   counter = counter +1
                    write(*,*) "rotBandIndex set"
                  endif       
                enddo
              enddo
            enddo   
-           write(*,*) "done with loop"
 
 
 c.... Debug Jitesh

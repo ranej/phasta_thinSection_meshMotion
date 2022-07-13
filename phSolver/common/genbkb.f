@@ -239,12 +239,10 @@ c           call MPI_BARRIER(MPI_COMM_WORLD, ierr)
      &      c_loc(tmpm2gb),im2gbsiz,dataInt,iotype)
 c    
            do i=1,neltp
-             counter = 0
              do j = 1,numRotBands
                do k = 1,numRotBandFaceTags
                  if (tmpm2gb(i,1) .eq. rotBandTag(j,k)) then
                    rotBandIndex(i) = j
-                   counter = counter +1
                    write(*,*) "rotBandIndex set"
                  endif       
                enddo

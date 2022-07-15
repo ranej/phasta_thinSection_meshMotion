@@ -17,7 +17,8 @@ c
         include "mpif.h" !Required to determine the max for itpblk
 
         integer, target, allocatable :: ientp(:,:),iBCBtp(:,:)
-        integer, allocatable :: rotBandIndex(:)
+        integer, target, allocatable :: im2gbtp(:,:) 
+        integer, target,  allocatable :: rotBandIndextp(:)
         real*8, target, allocatable :: BCBtp(:,:)
         integer materb(ibksz)
         integer counter
@@ -133,11 +134,16 @@ c      write(*,*) ' BKB: iblk, intfromfile:',iblk,intfromfile(1:8)
            allocate (ientp(neltp,nshl))
            allocate (iBCBtp(neltp,ndiBCB))
            allocate (BCBtp(neltp,ndBCB))
+           allocate (im2gbtp(neltp,3))
            allocate(ientmp (ibksz,nshl))
            allocate(ibcbtmp(ibksz,ndiBCB))
            allocate(bcbtmp (ibksz,ndBCB))
            allocate(neltp_mattype(nummat))
-           
+           allocate(im2gbtmp(ibksz,3))
+           allocate(rotBandIndextp(neltp))
+           allocate(rotBandIndextmp(ibksz))
+
+           write(*,*) "allocated all"           
            iientpsiz=neltp*nshl
 
            call phio_readdatablock(fhandle, fname2 // char(0),
@@ -222,6 +228,7 @@ c....Debug Jitesh
 c.... Read the m2gb data
 c
 c           call MPI_BARRIER(MPI_COMM_WORLD, ierr)
+            write(*,*) "reading m2gb data"
             if(input_mode.ge.1)then
                write (fname2,"('m2gb',i1)") iblk
             else
@@ -231,24 +238,23 @@ c           call MPI_BARRIER(MPI_COMM_WORLD, ierr)
            intfromfile(:)=-1
            call phio_readheader(fhandle, fname2 // char(0),
      &      c_loc(intfromfile), itwo, dataInt, iotype)
-           allocate(tmpm2gb(neltp,3))
-           if ( .not. allocated(rotBandIndex) ) allocate(rotBandIndex(neltp))
-           rotBandIndex = 0
+          
+           rotBandIndextp = zero
            im2gbsiz = neltp*3
            call phio_readdatablock(fhandle, fname2 // char(0),
-     &      c_loc(tmpm2gb),im2gbsiz,dataInt,iotype)
+     &      c_loc(im2gbtp),im2gbsiz,dataInt,iotype)
 c    
            do i=1,neltp
              do j = 1,numRotBands
                do k = 1,numRotBandFaceTags
-                 if (tmpm2gb(i,1) .eq. rotBandTag(j,k)) then
-                   rotBandIndex(i) = j
-                   write(*,*) "rotBandIndex set"
+                 if (im2gbtp(i,1) .eq. rotBandTag(j,k)) then
+                   rotBandIndextp(i) = j
                  endif       
                enddo
              enddo
            enddo   
 
+           write(*,*) " done reading m2gb data"
 
 c.... Debug Jitesh
 
@@ -289,17 +295,23 @@ c... get npro and fill the temp arrays: ientmp, ibcbtmp, bcbtmp
 c
                npro = 0
 c
+               write(*,*) "Reached before do loop"
                do 
                  if (mattype(iptr) == mat_tag(imattype,1)) then
                    npro = npro + 1
+                   write(*,*) "inside IF"
                    ientmp (npro,1:nshl)   = ientp (iptr,1:nshl)
+                   write(*,*) "ientmp?"                        
                    ibcbtmp(npro,1:ndiBCB) = ibcbtp(iptr,1:ndiBCB)
                    bcbtmp (npro,1:ndBCB)  = bcbtp (iptr,1:ndBCB)
+                   im2gbtmp (npro,1:3)    = im2gbtp (iptr,1:3)
+                   rotBandIndextmp (npro) = rotBandIndextp (iptr)
                  endif
                  iptr = iptr + 1
                  if (npro == ibksz .or. iptr>neltp) exit
                enddo
 c
+               write(*,*) " do loop done"
                if (npro == 0) cycle material_loop
 c
                  nelblb=nelblb+1
@@ -325,6 +337,8 @@ c
                  allocate (mienb(nelblb)%p(npro,nshl))
                  allocate (miBCB(nelblb)%p(npro,ndiBCB))
                  allocate (mBCB(nelblb)%p(npro,nshlb,ndBCB))
+                 allocate (mim2gb(nelblb)%p(npro,3))
+                 allocate (mrotBandIndex(nelblb)%p(npro))
 c 
 c.... save the boundary element block
 c 
@@ -334,9 +348,14 @@ c     &                materb,        mienb(nelblb)%p,
 c     &                miBCB(nelblb)%p,        mBCB(nelblb)%p,
 c     &                mmatb(nelblb)%p)
 c
-                call gensvb (mienb(nelblb)%p, mibcb(nelblb)%p, mbcb(nelblb)%p,
-     &                     ientmp,         ibcbtmp,        bcbtmp)
+               call gensvb (mienb(nelblb)%p, mibcb(nelblb)%p, mbcb(nelblb)%p,
+     &                     mim2gb(nelblb)%p, mrotBandIndex(nelblb)%p,
+     &                     ientmp,         ibcbtmp,        bcbtmp,
+     &                     im2gbtmp, rotBandIndextmp)
 c
+c               call gensvb (mienb(nelblb)%p, mibcb(nelblb)%p, mbcb(nelblb)%p,
+c     &                     ientmp,         ibcbtmp,        bcbtmp)
+
                  iel=iel+npro
                  if (iptr > neltp) exit blocks_loop
 
@@ -352,7 +371,10 @@ c
            deallocate(mattype)
            deallocate(neltp_mattype)
            deallocate(bcbtmp)
-           deallocate(tmpm2gb)
+           deallocate(im2gbtp)
+           deallocate(im2gbtmp)
+           deallocate(rotBandIndextp)
+           deallocate(rotBandIndextmp)
 
         enddo iblk_loop
         lcblkb(1,nelblb+1) = iel

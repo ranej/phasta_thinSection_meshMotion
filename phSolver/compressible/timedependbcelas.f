@@ -926,7 +926,6 @@ c Prescribing BC to F11 (rotating band face)
      &       (m2gClsfcn(i,2) .eq. 455) .or.
      &       (m2gClsfcn(i,2) .eq. 452) .or.
      &       (m2gClsfcn(i,2) .eq. 450) ) then
-             write(*,*) 'Vertex:', m2gClsfcn(i,2), x(i,:)
           endif
 
 

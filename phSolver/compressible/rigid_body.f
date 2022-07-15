@@ -16,7 +16,6 @@ c
           real*8, allocatable  :: rbAng(:)
           real*8, allocatable  :: rbAngOld(:)
           real*8, allocatable  :: rbTotalAng(:)
-          real*8, allocatable  :: rotBandForce(:,:)
         end module
 c
 c----------------------------------------------------------------------
@@ -44,7 +43,6 @@ c
         allocate( rbAng(numrbs)  )
         allocate( rbAngOld(numrbs)  )
         allocate( rbTotalAng(numrbs)  )
-        allocate( rotBandForce (numRotBands, 3) )
 c
         rbForce  = zero
         rbTorque = zero

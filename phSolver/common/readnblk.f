@@ -13,10 +13,6 @@ c
         real*8, allocatable :: m2gParCoord(:,:)
       end module
 
-      module rotBand
-        integer,allocatable  :: rotBandIndex(:) 
-      end module
-
       module rigidBodyReadData
         integer              :: rbUseReadData
         integer, allocatable :: rbIDs(:)

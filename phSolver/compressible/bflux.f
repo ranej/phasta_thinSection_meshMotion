@@ -261,6 +261,7 @@ c
      &                 shglb(lcsyst,:,1:nshl,:),
      &                 mienb(iblk)%p,           mmatb(iblk)%p,
      &                 miBCB(iblk)%p,           mBCB(iblk)%p,
+     &                 mim2gb(iblk)%p,          mrotBandIndex(iblk)%p,
      &                 invflx,                  flxres,
      &                 flxLHS,                  flxnrm)
 c

@@ -42,7 +42,8 @@ c
          type (i1d), dimension(MAXBLK2) ::  mieMap
          type (i2d), dimension(MAXBLK2) ::  mien
          type (i2d64), dimension(MAXBLK2) ::  mienG
-         type (i2d), dimension(MAXBLK2) ::  mienb,  miBCB
+         type (i2d), dimension(MAXBLK2) ::  mienb,  miBCB, mim2gb
+         type (i1d), dimension(MAXBLK2) ::  mrotBandIndex
          type (i2d), dimension(MAXBLK2) ::  mienif0, mienif1
          type (r2d), dimension(MAXBLK2) ::  mxmudmi
          type (r3d), dimension(MAXBLK2) ::  mBCB

@@ -240,6 +240,8 @@ c
         if (numrbs .gt. 0) call malloc_rbForce
         call malloc_post_param
 c
+        if (numRotBands .gt. 0) call malloc_rotBandForce
+
         call init_sum_vi_area(nshg,nsd)
         call ifbc_malloc
 c

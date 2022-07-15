@@ -1,6 +1,7 @@
         subroutine AsBMFG (y,       x,       shpb,    shglb,
      &                     ienb,    materb,  iBCB,    BCB,
-     &                     res,     rmes,    EGmass,  umesh)
+     &                     im2gb,  rotBandIndex,   res,   rmes,  EGmass,
+     &                     umesh)
 c
 c----------------------------------------------------------------------
 c
@@ -17,6 +18,7 @@ c
      &            shglb(nsd,nshl,ngaussb),        
      &            ienb(npro,nshl),
      &            iBCB(npro,ndiBCB),        BCB(npro,nshlb,ndBCB),
+     &            im2gb(npro,3),            rotBandIndex(nrpo),
      &            res(nshg,nflow),         rmes(nshg,nflow)
 c
         dimension ycl(npro,nshl,ndofl),  xlb(npro,nenl,nsd),
@@ -46,6 +48,12 @@ c
         if (numrbs .gt. 0) then
           call local_rbIndex (ienb, npro, nshl)
         endif
+
+        do i= 1,npro
+           write(*,*) "m2gb in asbmfg:", im2gb(i,1)
+           write(*,*) "rotBandIndex:", rotBandIndex(i)
+        end do    
+
 c
 c      do iel = 1,npro
 c        do n = 1,nshlb
@@ -70,9 +78,9 @@ c
 !  so both will access data
 !  properly from this location.
 c
-        call e3b  (ycl,     ycl,     iBCB,    BCB,     shpb,    shglb,
-     &             xlb,     rl,      rml,     sgn,     EGmass,  materb,
-     &             uml)
+        call e3b  (ycl,     ycl,     iBCB,    BCB,   im2gb, rotBandIndex, shpb,
+     &             shglb,   xlb,     rl,      rml,     sgn,      EGmass,
+     &             materb,     uml)
 c
         !assemble the residual and the modified residual
         call local(res,    rl,     ienb,   nflow,  'scatter ')

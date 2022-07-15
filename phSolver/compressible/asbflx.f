@@ -1,6 +1,7 @@
         subroutine AsBFlx (y,       x,       shpb,    shglb,
      &                     ienb,    materb,  iBCB,    BCB,
-     &                     invflx,  flxres,  flxLHS,  flxnrm)
+     &                     im2gb,  rotBandIndex,  invflx,  flxres,  flxLHS,
+     &                     flxnrm)
 c
 c----------------------------------------------------------------------
 c
@@ -18,7 +19,8 @@ c
      &            ienb(npro,nshl),          materb(npro),
      &            iBCB(npro,ndiBCB),        BCB(npro,nshlb,ndBCB),
      &            invflx(numnp),            flxres(numnp,nflow),
-     &            flxLHS(numnp,1),          flxnrm(numnp,nsd)
+     &            flxLHS(numnp,1),          flxnrm(numnp,nsd),
+     &            im2gb(npro,3),            rotBandIndex(npro,3)
 c
         dimension ycl(npro,nshl,ndof),       xlb(npro,nenl,nsd),
      &            rl(npro,nshl,nflow),      rml(npro,nshl,nflow),
@@ -50,8 +52,8 @@ c
 c.... get the boundary element residual
 c
         rl = zero
-        call e3b (ycl, ycl,     iBCB,    BCB,     shpb,    shglb,
-     &            xlb,     rl,      rml,      sgn)
+        call e3b (ycl, ycl,     iBCB,    BCB,  im2gb, rotBandIndex,  shpb,
+     &           shglb,   xlb,     rl,      rml,      sgn)
 c
 c.... assemble the residual
 c 

@@ -1,6 +1,6 @@
         subroutine AsBRes (y, yc,      x,       shpb,    shglb,
-     &                     ienb,    materb,  iBCB,    BCB,
-     &                     rmes)
+     &                     ienb,    materb,  iBCB,    BCB, im2gb,
+     &                     rotBandIndex,   rmes)
 c
 c----------------------------------------------------------------------
 c
@@ -17,7 +17,8 @@ c
      &            shglb(nsd,nshl,ngaussb),
      &            ienb(npro,nshl),        materb(npro),
      &            iBCB(npro,ndiBCB),     BCB(npro,nshlb,ndBCB),
-     &            rmes(nshg,nflow)
+     &            rmes(nshg,nflow),      im2gb(npro),
+     &            rotBandIndex(npro)
 c
         dimension yl(npro,nshl,nflow),    xlb(npro,nenl,nsd),
      &            ycl(npro,nshl,ndof),    rml(npro,nshl,nflow)
@@ -40,8 +41,8 @@ c
 c.... get the boundary element residuals
 c
         rml = zero
-        call e3b  (yl,      ycl,     iBCB,    BCB,     shpb,    shglb,
-     &             xlb,     rml,     rml,     sgn)
+        call e3b  (yl,      ycl,     iBCB,    BCB, im2gb,  rotBandIndex,
+     &             shpb,   shglb,    xlb,     rml,     rml,     sgn)
 
 c
 c.... assemble the residual and the modified residual

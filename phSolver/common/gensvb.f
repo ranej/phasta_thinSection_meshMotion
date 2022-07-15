@@ -1,4 +1,4 @@
-        subroutine gensvb (ienb,   ibcb,    bcb)
+        subroutine gensvb (ienb,   ibcb,    bcb, im2gb, rotBandIndex)
 c
           use mattype_m
 c----------------------------------------------------------------------
@@ -12,6 +12,9 @@ c
         integer, dimension(npro,nshl),        intent(out) :: ienb
         integer, dimension(npro,ndibcb),      intent(out) :: ibcb
         real*8,  dimension(npro,nshlb,ndbcb), intent(out) :: bcb
+        integer, dimension(npro,3),           intent(out) :: im2gb
+        integer, dimension(npro),             intent(out) :: rotBandIndex
+
 c
 c.... generate the boundary element mapping
 c
@@ -22,6 +25,12 @@ c
 c.... save the boundary element data
 c
         iBCB   = iBCBtmp
+        im2gb  = im2gbtmp
+        rotBandIndex = rotBandIndextmp
+        do i=1, npro
+           write(*,*) "rotBandIdex gensvb:" , rotBandIndex(i)
+        end do
+
         do i = 1, nenbl ! This is NOT NSHLB as we are just copying the
                         ! piecewise constant data given by NSpre and
                         ! higher order coefficients must be zero

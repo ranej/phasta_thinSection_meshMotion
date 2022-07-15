@@ -209,6 +209,7 @@ c
      &                 tmpshpb,                 tmpshglb, 
      &                 mienb(iblk)%p,           mmatb(iblk)%p,
      &                 miBCB(iblk)%p,           mBCB(iblk)%p,
+     &                 mim2gb(iblk)%p,          mrotBandIndex(iblk)%p,
      &                 res,                     rmes)
 
           deallocate (tmpshpb)
@@ -705,7 +706,8 @@ c
      &                 tmpshpb,                 tmpshglb, 
      &                 mienb(iblk)%p,           mater ,
      &                 miBCB(iblk)%p,           mBCB(iblk)%p,
-     &                 res,                     rmes, 
+     &                 mim2gb(iblk)%p,          mrotBandIndex(iblk)%p,
+     &                 res,                     rmes,
      &                 EGmass,                  umesh)
 c
           if(lhs == 1 .and. iLHScond > 0) then

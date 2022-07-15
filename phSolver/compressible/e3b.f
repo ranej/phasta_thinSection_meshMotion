@@ -1,6 +1,6 @@
-       subroutine e3b (yl,      ycl,  iBCB,    BCB,     shpb,    shglb,
-     &                 xlb,     rl,   rml,     sgn,     EGmass,  materb,
-     &                 uml)
+       subroutine e3b (yl,      ycl,  iBCB,    BCB,   im2gb,   rotBandIndex,   
+     &                 shpb,    shglb,    xlb,     rl,   rml,     sgn, 
+     &                 EGmass,  materb,     uml)
 c
 c----------------------------------------------------------------------
 c
@@ -54,6 +54,7 @@ c----------------------------------------------------------------------
 c
         use e3_param_m
         use rigidBodyForce
+        use rotatingBandForce
 c
         include "common.h"
 c
@@ -62,7 +63,8 @@ c
      &            BCB(npro,nshlb,ndBCB),       shpb(nshl,ngaussb),
      &            shglb(nsd,nshl,ngaussb),         
      &            xlb(npro,nenl,nsd),          
-     &            rl(npro,nshl,nflow),          rml(npro,nshl,nflow)
+     &            rl(npro,nshl,nflow),          rml(npro,nshl,nflow),
+     &            im2gb(npro,3),                rotBandIndex(npro)   
 c
         dimension g1yi(npro,nflow),             g2yi(npro,nflow),
      &            g3yi(npro,nflow),             WdetJb(npro),
@@ -100,11 +102,11 @@ c
      &            shape(npro,nshl),        shdrv(npro,nsd,nshl)
 c
         dimension xmudum(npro,ngauss)
-        dimension rotBandIndex(npro)
         integer   aa, b
         integer, intent(in) :: materb
 
         ttim(40) = ttim(40) - secs(0.0)
+
 
 c
 c.... compute the nodes which lie on the boundary
@@ -412,8 +414,12 @@ c
 c
 c.... compute the forces on each rotating band
 c
+          write(*,*) "Inside Rotating Band Forces", numRotBands
           do i = 1, npro
-            if (rotBandIndex(i).ge.1) then
+              write(*,*) "im2gb", im2gb(i,1)  
+              write(*,*) "rotBandIndex", rotBandIndex(i)  
+            if (rotBandIndex(i).ge.1) then        
+              write(*,*) "rotBandIndex Found", rotBandIndex(i)  
               rotBandForce(rotBandIndex(i),1) = rotBandForce(rotBandIndex(i),1)
      &                 + ( pres(i) * bnorm(i,1) - tau1n(i) ) * WdetJb(i)
               rotBandForce(rotBandIndex(i),2) = rotBandForce(rotBandIndex(i),2)

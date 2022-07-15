@@ -239,6 +239,7 @@ c           call MPI_BARRIER(MPI_COMM_WORLD, ierr)
      &      c_loc(intfromfile), itwo, dataInt, iotype)
           
            rotBandIndextp = zero
+           im2gbtp = zero
            im2gbsiz = neltp*3
            call phio_readdatablock(fhandle, fname2 // char(0),
      &      c_loc(im2gbtp),im2gbsiz,dataInt,iotype)

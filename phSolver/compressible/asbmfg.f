@@ -51,7 +51,7 @@ c
 
         do i= 1,npro
            write(*,*) "m2gb in asbmfg:", im2gb(i,1)
-           orite(*,*) "rotBandIndex:", rotBandIndex(i)
+           write(*,*) "rotBandIndex:", rotBandIndex(i)
         end do    
 
 c

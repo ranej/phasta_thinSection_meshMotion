@@ -143,7 +143,6 @@ c      write(*,*) ' BKB: iblk, intfromfile:',iblk,intfromfile(1:8)
            allocate(rotBandIndextp(neltp))
            allocate(rotBandIndextmp(ibksz))
 
-           write(*,*) "allocated all"           
            iientpsiz=neltp*nshl
 
            call phio_readdatablock(fhandle, fname2 // char(0),
@@ -295,13 +294,10 @@ c... get npro and fill the temp arrays: ientmp, ibcbtmp, bcbtmp
 c
                npro = 0
 c
-               write(*,*) "Reached before do loop"
                do 
                  if (mattype(iptr) == mat_tag(imattype,1)) then
                    npro = npro + 1
-                   write(*,*) "inside IF"
                    ientmp (npro,1:nshl)   = ientp (iptr,1:nshl)
-                   write(*,*) "ientmp?"                        
                    ibcbtmp(npro,1:ndiBCB) = ibcbtp(iptr,1:ndiBCB)
                    bcbtmp (npro,1:ndBCB)  = bcbtp (iptr,1:ndBCB)
                    im2gbtmp (npro,1:3)    = im2gbtp (iptr,1:3)
@@ -311,7 +307,6 @@ c
                  if (npro == ibksz .or. iptr>neltp) exit
                enddo
 c
-               write(*,*) " do loop done"
                if (npro == 0) cycle material_loop
 c
                  nelblb=nelblb+1

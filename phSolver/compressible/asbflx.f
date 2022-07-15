@@ -20,7 +20,7 @@ c
      &            iBCB(npro,ndiBCB),        BCB(npro,nshlb,ndBCB),
      &            invflx(numnp),            flxres(numnp,nflow),
      &            flxLHS(numnp,1),          flxnrm(numnp,nsd),
-     &            im2gb(npro,3),            rotBandIndex(npro,3)
+     &            im2gb(npro,3),            rotBandIndex(npro)
 c
         dimension ycl(npro,nshl,ndof),       xlb(npro,nenl,nsd),
      &            rl(npro,nshl,nflow),      rml(npro,nshl,nflow),

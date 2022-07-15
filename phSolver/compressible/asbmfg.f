@@ -18,7 +18,7 @@ c
      &            shglb(nsd,nshl,ngaussb),        
      &            ienb(npro,nshl),
      &            iBCB(npro,ndiBCB),        BCB(npro,nshlb,ndBCB),
-     &            im2gb(npro,3),            rotBandIndex(nrpo),
+     &            im2gb(npro,3),            rotBandIndex(npro),
      &            res(nshg,nflow),         rmes(nshg,nflow)
 c
         dimension ycl(npro,nshl,ndofl),  xlb(npro,nenl,nsd),
@@ -51,7 +51,7 @@ c
 
         do i= 1,npro
            write(*,*) "m2gb in asbmfg:", im2gb(i,1)
-           write(*,*) "rotBandIndex:", rotBandIndex(i)
+           orite(*,*) "rotBandIndex:", rotBandIndex(i)
         end do    
 
 c

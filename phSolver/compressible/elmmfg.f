@@ -201,7 +201,7 @@ c
      &          tmpshpb,                 tmpshglb, 
      &          mienb(iblk)%p,           mmatb(iblk)%p,
      &          miBCB(iblk)%p,           mBCB(iblk)%p,
-     &          mim2gb(iblk)%p,
+     &          mim2gb(iblk)%p,          mrotBandIndex(iblk)%p,
      &          res,                     rmes)
   
 	   deallocate (tmpshpb)

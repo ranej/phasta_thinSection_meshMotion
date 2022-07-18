@@ -546,6 +546,11 @@ c.... reset rigid body force
 c
                      if (numrbs .gt. 0) call init_rbForce
 c
+c.... reset rotating band force
+
+                     if (numRotBands .gt. 0) call init_rotBandForce
+c
+c
 c.... initialize max error variables
                      if (errorEstimation .ge. 1) then
                        errorMaxMass = 0.0
@@ -1488,6 +1493,10 @@ c
 c
       if (numrbs .gt. 0) then
         call release_rbForce
+      endif
+
+      if (numRotBands .gt. 0) then
+        call release_rotBandForce
       endif
 c
       call release_post_param

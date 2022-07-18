@@ -414,21 +414,24 @@ c
 c
 c.... compute the forces on each rotating band
 c
+c... For now, rotBandIndex=j. Ideally rotBandIndex will be set in genbkb.f
           write(*,*) "Inside Rotating Band Forces", numRotBands
           do i = 1, npro
-              write(*,*) "im2gb", im2gb(i,1)  
-              write(*,*) "rotBandIndex", rotBandIndex(i)  
-            if (rotBandIndex(i).ge.1) then        
-              write(*,*) "rotBandIndex Found", rotBandIndex(i)  
-              rotBandForce(rotBandIndex(i),1) = rotBandForce(rotBandIndex(i),1)
+             do j = 1,numRotBands
+               do k = 1,numRotBandFaceTags
+                 if (im2gb(i,1) .eq. rotBandTag(j,k)) then        
+                   write(*,*) "rotBand Found", rotBandTag(j,k)  
+                   rotBandForce(j,1) = rotBandForce(j,1)
      &                 + ( pres(i) * bnorm(i,1) - tau1n(i) ) * WdetJb(i)
-              rotBandForce(rotBandIndex(i),2) = rotBandForce(rotBandIndex(i),2)
+                   rotBandForce(j,2) = rotBandForce(j,2)
      &                 + ( pres(i) * bnorm(i,2) - tau2n(i) ) * WdetJb(i)
-              rotBandForce(rotBandIndex(i),3) = rotBandForce(rotBandIndex(i),3)
+                   rotBandForce(j,3) = rotBandForce(j,3)
      &                 + ( pres(i) * bnorm(i,3) - tau3n(i) ) * WdetJb(i)
-            endif
-          enddo
-        endif ! end if ires = 2 and is the last solve in the stagger and have rb
+                 endif
+               enddo
+             enddo
+           enddo
+         endif ! end if ires = 2 and is the last solve in the stagger and have rotBands
 c
 c.... end of integration loop
 c

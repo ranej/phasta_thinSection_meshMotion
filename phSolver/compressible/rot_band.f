@@ -15,7 +15,6 @@ c
         allocate( rotBandForce (numRotBands, 3) )
 c
         rotBandForce  = zero
-cRane   
         write(*,*) 'inside malloc_rotBandForce'
         return
 
@@ -23,6 +22,24 @@ cRane
 c
 c----------------------------------------------------------------------
 c
+c----------------------------------------------------------------------
+c
+        subroutine init_rotBandForce
+c
+        use rotatingBandForce
+        use number_def_m
+c
+        rotBandForce  = zero
+c
+        return
+        end
+c
+c----------------------------------------------------------------------
+c
+
+
+
+
         subroutine commu_rotBandForce
 c
         use rotatingBandForce

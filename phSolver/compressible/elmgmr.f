@@ -1096,6 +1096,8 @@ c.... -------------------->   communications <-------------------------
 c
       if (numpe > 1) then
         call commu_rbForce
+        
+        call commu_rotBandForce
 
         call commu (res  , ilwork, nflow  , 'in ')
 

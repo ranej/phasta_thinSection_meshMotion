@@ -738,6 +738,7 @@ c.... comp3_elas and DG interface share the same iBC, thus, this
 c     call will replace the interface vel with prescribed value
 c     when using Force-driven as Mesh Elas Model in solver.inp
                    if (elasModel .eq. 1) then
+                     write(*,*) "Calling timeDependBCElas"
                      call timeDependBCElas(x, iBC, BC(:,ndof+2:ndof+4),
      &                                             BC(:,3:5), umeshold)
 cRane... Write m2g field as double

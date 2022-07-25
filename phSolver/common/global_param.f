@@ -240,8 +240,9 @@ c
         integer(c_int)         :: numRotBands
         integer(c_int)         :: numRotBandFaceTags
         integer(c_int), target :: rotBandTag(MAXTS, MAXTS)
+        integer(c_int), target :: rotBandMM(MAXTS)
         common /rotatingband/    numRotBands,   numRotBandFaceTags,  
-     &                         rotBandTag
+     &                         rotBandTag, rotBandMM
       end module rotatingband_m
 c
 c----------------------------------------------------------------------

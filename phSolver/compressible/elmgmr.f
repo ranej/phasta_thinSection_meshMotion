@@ -645,7 +645,8 @@ c
 c.... loop over the boundary elements
 c
         do iblk = 1, nelblb
-c
+          write(*,*) "nelblb: " ,nelblb
+c         
 c.... set up the parameters
 c
           iel    = lcblkb(1,iblk)

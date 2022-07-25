@@ -305,6 +305,7 @@ extern "C" {
     int numRotBands;
     int numRotBandFaceTags;
     int rotBandTag[MAXTS][MAXTS];
+    int rotBandMM[MAXTS];
   } rotatingband ;
   
 

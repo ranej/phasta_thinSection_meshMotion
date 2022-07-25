@@ -415,14 +415,13 @@ c
 c.... compute the forces on each rotating band
 c
 c... For now, rotBandIndex=j. Ideally rotBandIndex will be set in genbkb.f
-          write(*,*) "Inside Rotating Band Forces", numRotBands
+c        write(*,*) "Inside Rotating Band Forces", numRotBands
           do i = 1, npro
              do j = 1,numRotBands
                do k = 1,numRotBandFaceTags
                  if (im2gb(i,1) .eq. rotBandTag(j,k)) then        
-                   write(*,*) "rotBand Found", rotBandTag(j,k)  
                    rotBandForce(j,1) = rotBandForce(j,1)
-     &                 + ( pres(i) * bnorm(i,1) - tau1n(i) ) * WdetJb(i)
+     &                 + 1* WdetJb(i)
                    rotBandForce(j,2) = rotBandForce(j,2)
      &                 + ( pres(i) * bnorm(i,2) - tau2n(i) ) * WdetJb(i)
                    rotBandForce(j,3) = rotBandForce(j,3)
@@ -432,6 +431,8 @@ c... For now, rotBandIndex=j. Ideally rotBandIndex will be set in genbkb.f
              enddo
            enddo
          endif ! end if ires = 2 and is the last solve in the stagger and have rotBands
+
+         write(*,*) "rotBandForce e3b", rotBandForce(1,1)
 c
 c.... end of integration loop
 c
@@ -525,7 +526,8 @@ c
         ngaussb = nintb(lcsyst)
 c        
         do intp = 1, ngaussb
-c
+
+c       
 c.... if Det. .eq. 0, do not include this point
 c
         if (Qwtb(lcsyst,intp) .eq. zero) cycle         ! precaution

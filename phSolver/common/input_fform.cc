@@ -719,8 +719,30 @@ int input_fform(phSolver::Input& inp)
       }
       for(j = 0; j < rotatingband.numRotBandFaceTags; ++j)
         rotatingband.rotBandTag[i][j] = ivec[j];
+    }
+    ivec.erase(ivec.begin(),ivec.end());
+
+    string RotBandbuf = (string)inp.GetValue("Rotating Band Motion Mode");
+    stringstream RotBandss(RotBandbuf);
+    for (i = 0; i < rotatingband.numRotBands; ++i){
+      if (!RotBandss.good()) {
+        cout << "Error: while reading Rotating Band Motion Mode!\n";
+        exit(1);
       }
-      ivec.erase(ivec.begin(),ivec.end());
+      string RotBandstr;
+      RotBandss >> RotBandstr;
+      cout << "RotBandStr : " << RotBandstr <<  endl;
+      if (RotBandstr == "Prescribed") {
+        rotatingband.rotBandMM[i] = 1;
+      }
+      else if (RotBandstr == "Computed") {
+        rotatingband.rotBandMM[i] = 2;
+      }
+      else {
+        cout << "Rotating Band Motion Mode: " << RotBandstr << " is not a legal value\n";
+        exit(1);
+      }
+    }
 // end rotating band face tags ---------------
 
 

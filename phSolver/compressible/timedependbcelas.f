@@ -94,6 +94,7 @@ c
       use core_snap
       use interfaceflag
       use core_rigid_body
+      use rotatingBandForce
 c
       include "common.h"
       include "mpif.h"
@@ -673,8 +674,7 @@ c
       endif  ! end case 11
 c
 c.... test case 12
-c.... shrink non-uniformly
-c
+c.... shrink non-uniformlyic
       if ( casenumber .eq. 12 ) then
         xtsl     = 2.0000000000000e-4
         dyn_org  = 2.6250000000000e-3 ! + DBLE(lstep) * xtsl
@@ -900,6 +900,27 @@ c
         ftag3 = 521
         ftag4 = 502
         
+                
+        do i = 1, numRotBands
+          if (rotBandMM(i) .eq. 1) then
+            write(*,*) "Using Rotating Band Motion Mode: Prescribed"
+          else if (rotBandMM(i) .eq. 2) then
+            write(*,*) "Using Rotating Band Motion Mode: Computed"
+          else
+            call error('timedependBCElas','notsupport mode',rotBandMM(i))
+          endif
+        enddo
+c.... bcast force to all processors
+
+        if (numpe .gt. 1) then
+          do j = 1, numRotBands
+            Forin  = (/ rotBandForce(j,1), rotBandForce(j,2), rotBandForce(j,3) /)
+            call MPI_BCAST (Forin(1), 3, MPI_DOUBLE_PRECISION,
+     &                      master,      MPI_COMM_WORLD,ierr)
+            rotBandForce(j,1:3) = Forin(1:3)
+          enddo
+        endif
+c.... collect total force
 c For 1 degree rotation
         ang = 1
         ang = ang*pi/180
@@ -909,7 +930,11 @@ c For 1 degree rotation
 
 c        cos_theta = 9.9939082701909576e-01
 c        sin_theta = 3.4899496702500969e-02
-             
+
+        do i = 1, numRotBands
+          write(*,*) "Force timedependelas: ", rotBandForce(i,1) 
+        enddo
+
         do i = 1, numnp
 
           x_center(i,1) = x(i,1) 

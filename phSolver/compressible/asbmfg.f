@@ -49,11 +49,6 @@ c
           call local_rbIndex (ienb, npro, nshl)
         endif
 
-        do i= 1,npro
-           write(*,*) "m2gb in asbmfg:", im2gb(i,1)
-           write(*,*) "rotBandIndex:", rotBandIndex(i)
-        end do    
-
 c
 c      do iel = 1,npro
 c        do n = 1,nshlb

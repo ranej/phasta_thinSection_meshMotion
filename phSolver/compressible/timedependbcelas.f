@@ -124,6 +124,7 @@ c.... precribed BC for rifling case
       real*8    pnormal(nshg,3), inormal(nshg,3)
       real*8    m2gD(nshg,3)
       real*8    cos_theta, sin_theta
+      integer   counter
 
       casenumber = 0
       if (elasFDC .gt. 0) then
@@ -901,26 +902,6 @@ c
         ftag4 = 502
         
                 
-        do i = 1, numRotBands
-          if (rotBandMM(i) .eq. 1) then
-            write(*,*) "Using Rotating Band Motion Mode: Prescribed"
-          else if (rotBandMM(i) .eq. 2) then
-            write(*,*) "Using Rotating Band Motion Mode: Computed"
-          else
-            call error('timedependBCElas','notsupport mode',rotBandMM(i))
-          endif
-        enddo
-c.... bcast force to all processors
-
-        if (numpe .gt. 1) then
-          do j = 1, numRotBands
-            Forin  = (/ rotBandForce(j,1), rotBandForce(j,2), rotBandForce(j,3) /)
-            call MPI_BCAST (Forin(1), 3, MPI_DOUBLE_PRECISION,
-     &                      master,      MPI_COMM_WORLD,ierr)
-            rotBandForce(j,1:3) = Forin(1:3)
-          enddo
-        endif
-c.... collect total force
 c For 1 degree rotation
         ang = 1
         ang = ang*pi/180
@@ -940,19 +921,6 @@ c        sin_theta = 3.4899496702500969e-02
           x_center(i,1) = x(i,1) 
           x_center(i,2) = 0.0077
           x_center(i,3) = -4.9403542382592772e-02
-
-
-c          write(*,*) 'calling core_is_in_closure'
-c          write(*,*) 'm2g: ' , m2gClsfcn(i,1), m2gClsfcn(i,2)
-c Prescribing BC to F11 (rotating band face)
-
-
-          if ( (m2gClsfcn(i,2) .eq. 323) .or.
-     &       (m2gClsfcn(i,2) .eq. 455) .or.
-     &       (m2gClsfcn(i,2) .eq. 452) .or.
-     &       (m2gClsfcn(i,2) .eq. 450) ) then
-          endif
-
 
           if (m2gClsfcn(i,1) .ne. 3) then
             call core_is_in_closure(m2gClsfcn(i,1), m2gClsfcn(i,2),
@@ -1047,6 +1015,29 @@ c... if z of normal is the max
 
 c
 c.... end test case 16
+c
+      if ( casenumber .eq. 17 ) then
+
+        do i = 1, numnp
+          if (m2gClsfcn(i,1) .ne. 3) then
+            do j = 1,numRotBands
+              do k = 1,numRotBandFaceTags
+                call core_is_in_closure(m2gClsfcn(i,1), m2gClsfcn(i,2),
+     &                            2,              rotBandTag(j,k),
+     &                            answer)          
+                if (answer. ne. 0) then
+c   Use rotBandForce(j,:) here to compute motion"
+                endif
+              enddo
+            enddo
+          endif
+         enddo        
+
+c... end loop over vertices
+
+      end if
+c
+c.... end test case 17
 c
 
       return

@@ -372,7 +372,7 @@ c
             call set_rbBC (x, iBC, BC(:,ndof+2:ndof+4), BC(:,3:5))
           endif
 c
-          if (elasFDC .gt. 0) then
+          if (elasFDC .gt. 0 .or. elasSICC .gt. 0 ) then
             call prescribedBCElas(x,   iBC,  BC(:,ndof+2:ndof+4),
      &                            BC(:,3:5), umeshold)
           endif

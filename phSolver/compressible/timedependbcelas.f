@@ -16,7 +16,7 @@ c
         call rigidBodyBCElas(x, iBC, BC, BC_flow)
       endif
 c
-      if (elasFDC .gt. 0) then
+      if (elasFDC .gt. 0 .or. elasSICC .gt. 0) then
         call prescribedBCElas(x, iBC, BC, BC_flow, umeshold)
       endif
 c
@@ -133,6 +133,13 @@ c.... precribed BC for rifling case
           write(*,*) "use Force-driven case:", elasFDC
         endif
         casenumber = elasFDC
+      endif
+
+      if (elasSICC .gt. 0) then
+        if (myrank .eq. master) then
+          write(*,*) "use set-in-code case:", elasSICC
+        endif
+        casenumber = elasSICC
       endif
 c
 c.... Update BC value based on geom and iBC

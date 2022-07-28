@@ -260,12 +260,15 @@ int input_fform(phSolver::Input& inp)
       conpar.elasModel = 0;
     } else if ((string)inp.GetValue("Mesh Elas Model") == "Force-driven" ) {
       conpar.elasModel = 1;
+    } else if ((string)inp.GetValue("Mesh Elas Model") == "Set-in-code" ) {
+      conpar.elasModel = 1;
     } else {
-      cout << " Mesh Elas Model: Only Legal Values ( None, Force-driven )";
+      cout << " Mesh Elas Model: Only Legal Values ( None, Force-driven, Set-in-code )";
       cout << endl;
       exit(1);
     }
-
+	
+    conpar.elasSICC = inp.GetValue("Mesh Elas Set-in-code case"); 
     conpar.elasFDC = inp.GetValue("Mesh Elas Force-driven case");
 
     if ((string)inp.GetValue("Solid Phase") == "False" ) {
@@ -722,24 +725,24 @@ int input_fform(phSolver::Input& inp)
     }
     ivec.erase(ivec.begin(),ivec.end());
 
-    string RotBandbuf = (string)inp.GetValue("Rotating Band Motion Mode");
+    string RotBandbuf = (string)inp.GetValue("Rotating Band Force Option");
     stringstream RotBandss(RotBandbuf);
     for (i = 0; i < rotatingband.numRotBands; ++i){
       if (!RotBandss.good()) {
-        cout << "Error: while reading Rotating Band Motion Mode!\n";
+        cout << "Error: while reading Rotating Band Force Option!\n";
         exit(1);
       }
       string RotBandstr;
       RotBandss >> RotBandstr;
       cout << "RotBandStr : " << RotBandstr <<  endl;
-      if (RotBandstr == "Prescribed") {
-        rotatingband.rotBandMM[i] = 1;
+      if (RotBandstr == "Normal Force") {
+        rotatingband.rotBandFO[i] = 1;
       }
-      else if (RotBandstr == "Computed") {
-        rotatingband.rotBandMM[i] = 2;
+      else if (RotBandstr == "Total Force") {
+        rotatingband.rotBandFO[i] = 2;
       }
       else {
-        cout << "Rotating Band Motion Mode: " << RotBandstr << " is not a legal value\n";
+        cout << "Rotating Band Force Option: " << RotBandstr << " is not a legal value\n";
         exit(1);
       }
     }

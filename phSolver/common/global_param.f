@@ -99,7 +99,7 @@ c
      &                  ndofelas, nshg,   nnz,    istop,  nflow,  nelas,
      &                  nnz_tot,  idtn,
      &                  ncorpsize, iownnodes, usingpetsc,
-     &                  elasModel, elasFDC, mesh2geom
+     &                  elasModel, elasFDC, elasSICC,  mesh2geom
         common /conpar/ numnp, numel,  numelb, numelif,
      &                  numpbc,   nen,    nfaces,
      &                  numflx,   ndof,   iALE, iSOLID,
@@ -108,7 +108,7 @@ c
      &                  ndofelas, nshg,   nnz,    istop,  nflow,  nelas,
      &                  nnz_tot,  idtn,
      &                  ncorpsize, iownnodes, usingpetsc,
-     &                  elasModel, elasFDC, mesh2geom
+     &                  elasModel, elasFDC, elasSICC, mesh2geom
       end module conpar_m
 c
 c----------------------------------------------------------------------
@@ -240,9 +240,9 @@ c
         integer(c_int)         :: numRotBands
         integer(c_int)         :: numRotBandFaceTags
         integer(c_int), target :: rotBandTag(MAXTS, MAXTS)
-        integer(c_int), target :: rotBandMM(MAXTS)
+        integer(c_int), target :: rotBandFO(MAXTS)
         common /rotatingband/    numRotBands,   numRotBandFaceTags,  
-     &                         rotBandTag, rotBandMM
+     &                         rotBandTag, rotBandFO
       end module rotatingband_m
 c
 c----------------------------------------------------------------------

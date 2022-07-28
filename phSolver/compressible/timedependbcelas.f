@@ -125,6 +125,7 @@ c.... precribed BC for rifling case
       real*8    m2gD(nshg,3)
       real*8    cos_theta, sin_theta
       integer   counter
+      real*8    Forcetmp(numnp,3)
 
       casenumber = 0
       if (elasFDC .gt. 0) then
@@ -912,9 +913,6 @@ c For 1 degree rotation
 c        cos_theta = 9.9939082701909576e-01
 c        sin_theta = 3.4899496702500969e-02
 
-        do i = 1, numRotBands
-          write(*,*) "Force timedependelas: ", rotBandForce(i,1) 
-        enddo
 
         do i = 1, numnp
 
@@ -1018,7 +1016,14 @@ c.... end test case 16
 c
       if ( casenumber .eq. 17 ) then
 
+
+        rotBandForcetmp(:,:) = zero
+        
         do i = 1, numnp
+          counter = 0
+c.. counter is used for averaging forces on vertex shared by multiple
+c.. rotating bands/faces
+
           if (m2gClsfcn(i,1) .ne. 3) then
             do j = 1,numRotBands
               do k = 1,numRotBandFaceTags
@@ -1026,11 +1031,14 @@ c
      &                            2,              rotBandTag(j,k),
      &                            answer)          
                 if (answer. ne. 0) then
-c   Use rotBandForce(j,:) here to compute motion"
+                  Forcetmp(i,:) = Forcetmp(i,:) + rotBandForce(j,:)
+                  counter=counter+1                                   
                 endif
               enddo
             enddo
           endif
+c... Average Forces on shared vertices
+          Forcetmp(i,:) = Forcetmp(i,:)/counter
          enddo        
 
 c... end loop over vertices

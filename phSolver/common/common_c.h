@@ -305,7 +305,7 @@ extern "C" {
     int numRotBands;
     int numRotBandFaceTags;
     int rotBandTag[MAXTS][MAXTS];
-    int rotBandMM[MAXTS];
+    int rotBandFO[MAXTS];
   } rotatingband ;
   
 
@@ -346,6 +346,7 @@ extern "C" {
     int usingpetsc;
     int elasModel;
     int elasFDC;
+    int elasSICC;
     int mesh2geom;
   } conpar ;
  

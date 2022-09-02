@@ -260,16 +260,16 @@ int input_fform(phSolver::Input& inp)
       conpar.elasModel = 0;
     } else if ((string)inp.GetValue("Mesh Elas Model") == "Force-driven" ) {
       conpar.elasModel = 1;
+      conpar.elasFDC = inp.GetValue("Mesh Elas Force-driven case");
     } else if ((string)inp.GetValue("Mesh Elas Model") == "Set-in-code" ) {
       conpar.elasModel = 1;
+      conpar.elasSICC = inp.GetValue("Mesh Elas Set-in-code case"); 
     } else {
       cout << " Mesh Elas Model: Only Legal Values ( None, Force-driven, Set-in-code )";
       cout << endl;
       exit(1);
     }
 	
-    conpar.elasSICC = inp.GetValue("Mesh Elas Set-in-code case"); 
-    conpar.elasFDC = inp.GetValue("Mesh Elas Force-driven case");
 
     if ((string)inp.GetValue("Solid Phase") == "False" ) {
       conpar.iSOLID = -1;
@@ -747,6 +747,23 @@ int input_fform(phSolver::Input& inp)
       }
     }
 // end rotating band face tags ---------------
+
+//Time depend flow_BC option
+
+    if ((string)inp.GetValue("Time Depend Flow BC") == "Off" ) {
+      timedependbcflow.tdbcflow = 0;
+    } else if ((string)inp.GetValue("Time Depend Flow BC") == "On" ) {
+      timedependbcflow.tdbcflow = 1;
+      timedependbcflow.tdbcflowcase = inp.GetValue("Time Depend Flow BC case"); 
+    } else {
+      cout << " Time Depend Flow BC: Only Legal Values ( False, True)";
+      cout << endl;
+      exit(1);
+    }
+
+
+
+//end Time depend flow_BC option
 
 
     vec = inp.GetValue("Density");

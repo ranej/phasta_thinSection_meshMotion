@@ -1045,7 +1045,9 @@ c.. rotating bands/faces
             enddo
           endif
 c... Average Forces on shared vertices
-          Forcetmp(i,:) = Forcetmp(i,:)/counter
+          if (counter .gt. 0)
+            Forcetmp(i,:) = Forcetmp(i,:)/counter
+          endif
          enddo        
 
 c... end loop over vertices

@@ -25,6 +25,7 @@
 #define meshquality FortranCInterface_GLOBAL_(meshquality,MESHQUALITY)
 #define rigidbody FortranCInterface_GLOBAL_(rigidbody,RIGIDBODY)
 #define rotatingband FortranCInterface_GLOBAL_(rotatingband,ROTATINGBAND)
+#define timedependbcflow FortranCInterface_GLOBAL_(timedependbcflow,TIMEDEPENDBCFLOW)
 #define astore FortranCInterface_GLOBAL_(astore,ASTORE)
 #define conpar FortranCInterface_GLOBAL_(conpar,CONPAR)
 #define ctrlvari FortranCInterface_GLOBAL_(ctrlvari,CTRLVARI)
@@ -308,6 +309,11 @@ extern "C" {
     int rotBandFO[MAXTS];
   } rotatingband ;
   
+  extern struct {
+    int tdbcflow;
+    int tdbcflowcase;
+  } timedependbcflow ;
+
 
   extern struct { 
     double a[100000];

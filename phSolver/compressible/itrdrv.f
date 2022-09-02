@@ -384,6 +384,9 @@ c
           endif
         enddo
 c
+        if (tdbcflow .eq. 1) then
+           call timeDependBCflow(x, iBC, BC(:,3:5))
+        endif
         call itrBC (yold,  ac,  iBC,  BC,  iper, ilwork, umesh)
 c
 c.... end of reset BC based on old data from restart
@@ -413,6 +416,9 @@ cRane
         if(iramp.eq.1) 
      &        call BCprofileScale(vbc_prof,BC,yold)
 
+
+        if(tdbcflow .eq. 1)
+     &        call timeDependBCflow(x, iBC, BC(:,3:5))
 c           call rerun_check(stopjob)
 cc          if(stopjob.ne.0) goto 2001
 c

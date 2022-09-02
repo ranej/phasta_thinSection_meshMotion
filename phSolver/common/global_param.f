@@ -246,6 +246,25 @@ c
       end module rotatingband_m
 c
 c----------------------------------------------------------------------
+c
+
+
+c
+c----------------------------------------------------------------------
+c
+c.... common /timedependbcflow/   : rotating band parameters
+c
+c
+      module timedependbcflow_m
+        use iso_c_binding
+        use global_const_m
+        implicit none
+        integer(c_int)         :: tdbcflow
+        integer(c_int)         :: tdbcflowcase
+        common /timedependbcflow/    tdbcflow,   tdbcflowcase
+      end module timedependbcflow
+c
+c
 c.... common /timdat/   : time data
 c
 c time          : current run time

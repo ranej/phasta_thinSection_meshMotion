@@ -124,7 +124,7 @@ c ... if z of normal is the max
 
 
 c
-c.... end test case 16
+c.... end case 1
 c
 
       return

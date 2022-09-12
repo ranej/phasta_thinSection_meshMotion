@@ -60,7 +60,7 @@ c... Tags for bullet
             x_center(i,2) = 0d0
             x_center(i,3) = 0d0
 
-              call core_is_in_closure(m2gClsfcn(i,1), m2gClsfcn(i,2),
+            call core_is_in_closure(m2gClsfcn(i,1), m2gClsfcn(i,2),
      &                            1,              etag4,
      &                            answer)
 

@@ -60,6 +60,10 @@ c... Tags for bullet
             x_center(i,2) = 0d0
             x_center(i,3) = 0d0
 
+              call core_is_in_closure(m2gClsfcn(i,1), m2gClsfcn(i,2),
+     &                            1,              etag4,
+     &                            answer)
+
 c Prescribed BC on the faces and edges of the bullet
             if( (m2gClsfcn(i,1).eq.2.and.m2gclsfcn(i,2).eq.ftag1) .or.
           &   (m2gClsfcn(i,1).eq.2.and.m2gclsfcn(i,2).eq.ftag2) .or.
@@ -69,8 +73,10 @@ c Prescribed BC on the faces and edges of the bullet
           &   (m2gClsfcn(i,1).eq.1.and.m2gclsfcn(i,2).eq.etag1) .or.
           &   (m2gClsfcn(i,1).eq.1.and.m2gclsfcn(i,2).eq.etag2) .or.
           &   (m2gClsfcn(i,1).eq.1.and.m2gclsfcn(i,2).eq.etag3) .or.
-          &   (m2gClsfcn(i,1).eq.1.and.m2gclsfcn(i,2).eq.etag4) )
+          &   (m2gClsfcn(i,1).eq.1.and.m2gclsfcn(i,2).eq.etag4) .or.
+               answer.ne.0)
               then
+
 
 c ... calc normal call to get this value
           

@@ -15,14 +15,10 @@ c
       integer   casenumber
 
 c.... precribed BC for slip surfaces 
-      real*8    ang, x_center(nshg,3), rotx(nshg,3)
       integer   ftag1, ftag2, ftag3, ftag4, ftag5
       integer   etag1, etag2, etag3, etag4
       integer   maxDir(1)
-      real*8    inormal(nshg,3), inormal(3)
-      real*8    m2gD(nshg,3)
-      real*8    cos_theta, sin_theta
-      integer   counter
+      real*8    inormal(3)
       integer   answer
       real*8    n1, n2, n3
 

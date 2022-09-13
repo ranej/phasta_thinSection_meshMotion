@@ -1,4 +1,4 @@
-      subroutine timeDependBCElas(x, iBC, BC_flow)
+      subroutine timeDependBCFlow(x, iBC, BC_flow)
 c
 c-----------------------------------------------------------------
 c

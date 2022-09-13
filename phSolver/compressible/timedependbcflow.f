@@ -19,10 +19,12 @@ c.... precribed BC for slip surfaces
       integer   ftag1, ftag2, ftag3, ftag4, ftag5
       integer   etag1, etag2, etag3, etag4
       integer   maxDir(1)
-      real*8    pnormal(nshg,3), inormal(nshg,3)
+      real*8    inormal(nshg,3), inormal(3)
       real*8    m2gD(nshg,3)
       real*8    cos_theta, sin_theta
       integer   counter
+      integer   answer
+      real*8    n1, n2, n3
 
       casenumber = 0
 
@@ -54,11 +56,7 @@ c... Tags for bullet
         etag3 = 141 ! f34
         etag4 = 143 ! f45
 
-          do i = 1, numnp
-
-            x_center(i,1) = x(i,1)
-            x_center(i,2) = 0d0
-            x_center(i,3) = 0d0
+        do i = 1, numnp
 
             call core_is_in_closure(m2gClsfcn(i,1), m2gClsfcn(i,2),
      &                            1,              etag4,
@@ -74,54 +72,50 @@ c Prescribed BC on the faces and edges of the bullet
           &   (m2gClsfcn(i,1).eq.1.and.m2gclsfcn(i,2).eq.etag2) .or.
           &   (m2gClsfcn(i,1).eq.1.and.m2gclsfcn(i,2).eq.etag3) .or.
           &   (m2gClsfcn(i,1).eq.1.and.m2gclsfcn(i,2).eq.etag4) .or.
-               answer.ne.0)
+              (m2gClsfcn(i,1).eq.0.and.answer.ne.0))
               then
 
 
-c ... calc normal call to get this value
-          
-c...  For back face (ftag5), at 0 deg AoA, normal will be x aligned
-c..   Normal calculations will need to change for non-zero AoA
-
-              if( m2gClsfcn(i,2) .eq. ftag5) then
-                pnormal(i,1) = 1
-                pnormal(i,2) = 0d0
-                pnormal(i,3) = 0d0
+              if((m2gClsfcn(i,1).eq.1).or.m2gClsfcn(i,1).eq.0) then
+                e_or_v_tag = m2gClsfcn(i,2)
               else
-                pnormal(i,:) = x(i,:) - x_center(i,)   
-              endif
+                f_tag = m2gClsfcn(i,2)  
+              end if
 
-              tmp = sqrt( pnormal(i,1)*pnormal(i,1)
-          &             + pnormal(i,2)*pnormal(i,2)
-          &             + pnormal(i,3)*pnormal(i,3) )
-              inormal(i,:) = pnormal(i,:) / (tmp)
+c ... calc normal
+              call core_get_surf_normal(m2gClsfcn(i,1), f_tag, e_or_v_tag,
+     &            m2gParCoord(i,1), m2gParCoord(i,2), n1, n2, n3)
 
-              maxDir = maxloc(abs(inormal(i,:)))
+              inormal(1) = n1
+              inormal(2) = n2
+              inormal(3) = n3
+
+              maxDir = maxloc(abs(inormal(:)))
               select case(maxDir(1))
 c ... if x of normal is the max
               case(1)
               iBC(i) = ibset(iBC(i),3)
               iBC(i) = ibclr(iBC(i),4)
               iBC(i) = ibclr(iBC(i),5)
-              BC_flow(i,1) = 0d0 / pnormal(i,1)
-              BC_flow(i,2) = pnormal(i,2) / pnormal(i,1)
-              BC_flow(i,3) = pnormal(i,3) / pnormal(i,1)
+              BC_flow(i,1) = 0d0 / inormal(1)
+              BC_flow(i,2) = inormal(2) / inormal(1)
+              BC_flow(i,3) = inormal(3) / inormal(1)
 c ... if y of normal is the max
               case(2)
               iBC(i) = ibclr(iBC(i),3)
               iBC(i) = ibset(iBC(i),4)
               iBC(i) = ibclr(iBC(i),5)
-              BC_flow(i,1) = 0d0 / pnormal(i,2)
-              BC_flow(i,2) = pnormal(i,1) / pnormal(i,2)
-              BC_flow(i,3) = pnormal(i,3) / pnormal(i,2)
+              BC_flow(i,1) = 0d0 / inormal(2)
+              BC_flow(i,2) = inormal(1) / inormal(2)
+              BC_flow(i,3) = inormal(3) / inormal(2)
 c ... if z of normal is the max
               case(3)
               iBC(i) = ibclr(iBC(i),3)
               iBC(i) = ibclr(iBC(i),4)
               iBC(i) = ibset(iBC(i),5)
-              BC_flow(i,1) = 0d0 / pnormal(i,3)
-              BC_flow(i,2) = pnormal(i,1) / pnormal(i,3)
-              BC_flow(i,3) = pnormal(i,2) / pnormal(i,3)
+              BC_flow(i,1) = 0d0 / inormal(3)
+              BC_flow(i,2) = inormal(1) / inormal(3)
+              BC_flow(i,3) = inormal(2) / inormal(3)
               end select
             endif
           enddo

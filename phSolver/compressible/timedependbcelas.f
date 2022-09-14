@@ -1009,7 +1009,7 @@ c... if z of normal is the max
               iBC(i) = ibset(iBC(i), 16)
               BC(i,1)= 0d0
               BC(i,2)= 0d0
-              BC(i,3)= 0d0 / pnormal(i,2)
+              BC(i,3)= 0d0 / pnormal(i,3)
               BC(i,4)= pnormal(i,2) / pnormal(i,3)              
             endif    
             end select

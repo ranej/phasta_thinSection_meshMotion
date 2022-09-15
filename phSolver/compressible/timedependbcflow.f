@@ -131,12 +131,8 @@ c ... if z of normal is the max
               select case(maxDir(1))
 c... if x of normal is the max
               case (1)
-              iBC(i) = ibset(iBC(i), 3)
-              iBC(i) = ibclr(iBC(i), 4)
-              iBC(i) = ibclr(iBC(i), 5)
-              BC_flow(i,1) = 0d0 / inormal(1)
-              BC_flow(i,2) = inormal(2) / inormal(1)
-              BC_flow(i,3) = inormal(3) / inormal(1)
+              call error('timedepenfbcflow, unit normal 
+     &            on back edge nb1 is max, which is not allowed')
 c... if y of normal is the max
               case (2)
               iBC(i) = ibset(iBC(i), 3)

@@ -131,7 +131,7 @@ c ... if z of normal is the max
               select case(maxDir(1))
 c... if x of normal is the max
               case (1)
-              call error('timedepenfbcflow, unit normal 
+              call error('timedependbcflow, unit normal 
      &            on back edge nb1 is max, which is not allowed')
 c... if y of normal is the max
               case (2)

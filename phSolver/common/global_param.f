@@ -255,14 +255,14 @@ c
 c.... common /timedependbcflow/   : rotating band parameters
 c
 c
-      module timedependbcflow_m
+      module timedepbcflow_m
         use iso_c_binding
         use global_const_m
         implicit none
         integer(c_int)         :: tdbcflow
         integer(c_int)         :: tdbcflowcase
-        common /timedependbcflow/    tdbcflow,   tdbcflowcase
-      end module timedependbcflow
+        common /timedepbcflow/    tdbcflow,   tdbcflowcase
+      end module timedepbcflow_m
 c
 c
 c.... common /timdat/   : time data

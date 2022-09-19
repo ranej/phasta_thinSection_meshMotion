@@ -5,6 +5,7 @@ c
 c-----------------------------------------------------------------
 c
       use m2gfields ! read m2g fields
+      use core_snap
 c
       include "common.h"
       include "mpif.h"
@@ -15,8 +16,8 @@ c
       integer   casenumber
 
 c.... precribed BC for slip surfaces 
-      integer   ftag1, ftag2, ftag3, ftag4, ftag5
-      integer   etag1, etag2, etag3, etag4
+      integer   ftag1, ftag2, ftag3, ftag4, ftag5, f_tag
+      integer   etag1, etag2, etag3, etag4, e_or_v_tag
       integer   maxDir(1)
       real*8    inormal(3)
       integer   answer
@@ -55,19 +56,18 @@ c... Tags for bullet
 
         do i = 1, numnp
         
-            if(m2gClsfcn(i,1).eq.0)
+            if(m2gClsfcn(i,1).eq.0) then
               call error('timedependbcflow, vertex slipBC not supported')
-
+            end if
 c Prescribed BC on the faces and edges of the bullet
-            if( (m2gClsfcn(i,1).eq.2.and.m2gclsfcn(i,2).eq.ftag1) .or.
-          &   (m2gClsfcn(i,1).eq.2.and.m2gclsfcn(i,2).eq.ftag2) .or.
-          &   (m2gClsfcn(i,1).eq.2.and.m2gclsfcn(i,2).eq.ftag3) .or.
-          &   (m2gClsfcn(i,1).eq.2.and.m2gclsfcn(i,2).eq.ftag4) .or.
-          &   (m2gClsfcn(i,1).eq.2.and.m2gclsfcn(i,2).eq.ftag5) .or.
-          &   (m2gClsfcn(i,1).eq.1.and.m2gclsfcn(i,2).eq.etag1) .or.
-          &   (m2gClsfcn(i,1).eq.1.and.m2gclsfcn(i,2).eq.etag2) .or.
-          &   (m2gClsfcn(i,1).eq.1.and.m2gclsfcn(i,2).eq.etag3))
-              then
+            if( (m2gClsfcn(i,1).eq.2 .and. m2gClsfcn(i,2).eq.ftag1) .or.
+     &        (m2gClsfcn(i,1).eq.2.and.m2gClsfcn(i,2).eq.ftag2) .or.
+     &        (m2gClsfcn(i,1).eq.2.and.m2gClsfcn(i,2).eq.ftag3) .or.
+     &        (m2gClsfcn(i,1).eq.2.and.m2gClsfcn(i,2).eq.ftag4) .or.
+     &        (m2gClsfcn(i,1).eq.2.and.m2gClsfcn(i,2).eq.ftag5) .or.
+     &        (m2gClsfcn(i,1).eq.1.and.m2gClsfcn(i,2).eq.etag1) .or.
+     &        (m2gClsfcn(i,1).eq.1.and.m2gClsfcn(i,2).eq.etag2) .or.
+     &        (m2gClsfcn(i,1).eq.1.and.m2gClsfcn(i,2).eq.etag3)) then
 
               if(m2gClsfcn(i,1).eq.1) then
                 e_or_v_tag = m2gClsfcn(i,2) 

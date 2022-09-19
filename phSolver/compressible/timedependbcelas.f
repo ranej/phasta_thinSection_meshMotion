@@ -1024,7 +1024,6 @@ c
       if ( casenumber .eq. 17 ) then
 
 
-        rotBandForcetmp(:,:) = zero
         
         do i = 1, numnp
           counter = 0
@@ -1045,9 +1044,9 @@ c.. rotating bands/faces
             enddo
           endif
 c... Average Forces on shared vertices
-          if (counter .gt. 0)
-            Forcetmp(i,:) = Forcetmp(i,:)/counter
-          endif
+c          if (counter .gt. 0)
+c            Forcetmp(i,:) = Forcetmp(i,:)/counter
+c          endif
          enddo        
 
 c... end loop over vertices

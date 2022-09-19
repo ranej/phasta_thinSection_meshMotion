@@ -39,6 +39,10 @@ c
         integer*8, allocatable :: TSflag(:)
       end module
 
+      module rotBand
+        integer,allocatable  :: rotBandIndex(:)
+      end module
+
       module readarrays
 
       use m2gfields

@@ -756,7 +756,7 @@ int input_fform(phSolver::Input& inp)
       timedepbcflow.tdbcflow = 1;
       timedepbcflow.tdbcflowcase = inp.GetValue("Time Depend Flow BC case"); 
     } else {
-      cout << " Time Depend Flow BC: Only Legal Values ( False, True)";
+      cout << " Time Depend Flow BC: Only Legal Values ( On, Off)";
       cout << endl;
       exit(1);
     }
